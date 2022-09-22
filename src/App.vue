@@ -95,49 +95,7 @@ const clase = computed(() => {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
-@import url("https://kit-pro.fontawesome.com/releases/v6.1.1/css/pro.min.css");
-@import url("./assets/components/card.css");
-@import url("./assets/components/modal.css");
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Quicksand", sans-serif;
-}
-section {
-  width: min(96%, 1200px);
-  margin: auto;
-}
+@import url("./assets/style.css");
 
-.add {
-  border: none;
-  outline: none;
-  padding: 10px 0;
-  width: 120px;
-  background-color: darkmagenta;
-  color: #fff;
-  margin: 1rem 0;
-  cursor: pointer;
-}
-.container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-}
-@media (max-width: 850px) {
-  .container {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-@media (max-width: 670px) {
-  .container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media (max-width: 430px) {
-  .container {
-    grid-template-columns: repeat(1, 1fr);
-  }
-}
+
 </style>
