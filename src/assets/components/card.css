@@ -1,0 +1,27 @@
+.card {
+  border: 1px solid #ddd;
+  padding: 40px 5px 5px 5px;
+  text-align: center;
+  box-shadow: 2px 2px 5px 0px #999;
+}
+.card-opt {
+  margin-top: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-opt button {
+  height: 30px;
+  width: 80px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #fff;
+}
+.edit {
+  background-color: darkgreen;
+}
+.delete {
+  background-color: darkred;
+}
