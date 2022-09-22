@@ -29,6 +29,31 @@ const contact = ref({
 });
 const url = ref("http://localhost/APPCRUD/controller/Contacto.controller.php");
 
+const apiUrl = async (
+  urls,
+  action,
+  json = true,
+  body = false,
+  element = false
+) => {
+  let formdata = null;
+  if (body) {
+    formdata = new FormData(body);
+  } else {
+    formdata = new FormData();
+    if (element) {
+      formdata.append(element.key, element.value);
+    }
+  }
+  formdata.append("action", action);
+  const data = await fetch(urls, {
+    method: "POST",
+    body: formdata,
+  });
+  const dato = await (json ? data.json() : data.text());
+  return dato;
+};
+
 const estadomodal = (data) => {
   data ? (dataload(data), openmodal()) : (clear(), closemodal());
 };
@@ -39,42 +64,27 @@ const closemodal = () => {
   estado.value = false;
 };
 const addcontact = async (data, type, id = false) => {
-  const formdata = new FormData(data);
-  formdata.append("action", type);
-  if (id) {
-    formdata.append("id", id);
-  }
-  const dato = await fetch(url.value, {
-    method: "POST",
-    body: formdata,
-  });
-  const resp = await dato.text();
-  console.log(resp);
-  list();
+  apiUrl(url.value, type, false, data, { key: "id", value: id }).then(
+    (data) => {
+      list();
+      clear();
+      closemodal();
+    }
+  );
 };
 
 const btndelete = async (id) => {
-  const formdata = new FormData();
-  formdata.append("action", "delete");
-  formdata.append("id", id);
-  const data = await fetch(url.value, {
-    method: "POST",
-    body: formdata,
-  });
-  const dato = await data.text();
-  console.log(dato);
+  apiUrl(url.value, "delete", false, false, { key: "id", value: id }).then(
+    (data) => {
+      list();
+    }
+  );
+
   list();
 };
 
 const list = async () => {
-  const formdata = new FormData();
-  formdata.append("action", "list");
-  const data = await fetch(url.value, {
-    method: "POST",
-    body: formdata,
-  });
-  const dato = await data.json();
-  datos.value = dato;
+  apiUrl(url.value, "list").then((data) => (datos.value = data));
 };
 const dataload = (data) => {
   contact.value.id = data.idcontacto;
@@ -96,6 +106,4 @@ const clase = computed(() => {
 
 <style>
 @import url("./assets/style.css");
-
-
 </style>
