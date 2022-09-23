@@ -55,7 +55,7 @@ const close = () => {
 };
 const agregar = (e) => {
   props.contact.id
-    ? emit("addcontact", e.target, "update", props.contact.id)
+    ? emit("addcontact", e.target, "update")
     : emit("addcontact", e.target, "create");
 };
 </script>

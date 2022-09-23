@@ -18,83 +18,43 @@ import { computed, ref } from "@vue/runtime-core";
 
 import Card from "./components/Card.vue";
 import Modal from "./components/Modal.vue";
+import { apiUrl, contact, dataload, clear } from "./hooks/Apiurl";
 
-const estado = ref(false);
+const modal = ref(false);
 const datos = ref([]);
-const contact = ref({
-  id: null,
-  nombre: "",
-  apellido: "",
-  telefono: "",
-});
-const url = ref("http://localhost/APPCRUD/controller/Contacto.controller.php");
 
-const apiUrl = async (
-  urls,
-  action,
-  json = true,
-  element = false,
-  body = null
-) => {
-  const formdata = new FormData((body ??= undefined));
-  if (element) {
-    formdata.append(element.key, element.value);
-  }
-
-  formdata.append("action", action);
-  const data = await fetch(urls, {
-    method: "POST",
-    body: formdata,
-  });
-  const dato = await (json ? data.json() : data.text());
-  return dato;
-};
+const api = ref("http://localhost/APPCRUD/controller/Contacto.controller.php");
 
 const estadomodal = (data) => {
   data ? (dataload(data), openmodal()) : (clear(), closemodal());
 };
 const openmodal = () => {
-  estado.value = true;
+  modal.value = true;
 };
 const closemodal = () => {
-  estado.value = false;
+  modal.value = false;
 };
-const addcontact = async (data, type, id = false) => {
-  apiUrl(url.value, type, false, { key: "id", value: id }, data).then(
-    (data) => {
-      list();
-      clear();
-      closemodal();
-    }
-  );
+const addcontact = async (data, type) => {
+  apiUrl(api.value, type, false, false, data).then((data) => {
+    list();
+    clear();
+    closemodal();
+  });
 };
 
 const btndelete = async (id) => {
-  apiUrl(url.value, "delete", false, { key: "id", value: id }).then((data) => {
+  apiUrl(api.value, "delete", false, { key: "id", value: id }).then((data) => {
     list();
   });
-
-  list();
 };
 
 const list = async () => {
-  apiUrl(url.value, "list").then((data) => (datos.value = data));
+  apiUrl(api.value, "list").then((data) => (datos.value = data));
 };
-const dataload = (data) => {
-  contact.value.id = data.idcontacto;
-  contact.value.nombre = data.nombre;
-  contact.value.apellido = data.apellido;
-  contact.value.telefono = data.telefono;
-};
+
 list();
-const clear = () => {
-  contact.value.id = null;
-  contact.value.nombre = "";
-  contact.value.apellido = "";
-  contact.value.telefono = "";
-};
 const clase = computed(() => {
-  return estado.value ? "active" : null;
+  return modal.value ? "active" : null;
 });
 </script>
 
