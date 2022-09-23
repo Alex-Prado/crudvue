@@ -33,18 +33,14 @@ const apiUrl = async (
   urls,
   action,
   json = true,
-  body = false,
-  element = false
+  element = false,
+  body = null
 ) => {
-  let formdata = null;
-  if (body) {
-    formdata = new FormData(body);
-  } else {
-    formdata = new FormData();
-    if (element) {
-      formdata.append(element.key, element.value);
-    }
+  const formdata = new FormData((body ??= undefined));
+  if (element) {
+    formdata.append(element.key, element.value);
   }
+
   formdata.append("action", action);
   const data = await fetch(urls, {
     method: "POST",
@@ -64,7 +60,7 @@ const closemodal = () => {
   estado.value = false;
 };
 const addcontact = async (data, type, id = false) => {
-  apiUrl(url.value, type, false, data, { key: "id", value: id }).then(
+  apiUrl(url.value, type, false, { key: "id", value: id }, data).then(
     (data) => {
       list();
       clear();
@@ -74,11 +70,9 @@ const addcontact = async (data, type, id = false) => {
 };
 
 const btndelete = async (id) => {
-  apiUrl(url.value, "delete", false, false, { key: "id", value: id }).then(
-    (data) => {
-      list();
-    }
-  );
+  apiUrl(url.value, "delete", false, { key: "id", value: id }).then((data) => {
+    list();
+  });
 
   list();
 };
