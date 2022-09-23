@@ -22,4 +22,7 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-*.json
+package-lock.json
+package.json
+vue.config.js
+jsconfig.json
